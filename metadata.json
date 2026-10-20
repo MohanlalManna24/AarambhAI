@@ -1,0 +1,6 @@
+{
+  "name": "Aarambh AI — Intelligent Event Planning & Operations Platform",
+  "description": "Production-grade GenAI-powered event planning platform for Indian and global weddings, corporate summits, birthdays, and cultural events with smart paise-accurate budget ledgers, timelines, vendor quotations, guest RSVPs, and role-based access control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,674 @@
+# PROJECT: AI-POWERED EVENT PLANNING ASSISTANT
+
+Act as a senior full-stack software architect, senior React developer, Node.js backend engineer, MongoDB database architect, AI integration engineer, UI/UX designer, QA engineer, and application security specialist.
+
+Build a complete, professional, production-oriented GenAI-powered Event Planning Assistant web application. This must be a functional full-stack application, not merely a landing page, static prototype, or UI mockup.
+
+The application helps users plan weddings, birthdays, anniversaries, corporate events, cultural programs, and community events using AI-generated plans, realistic budget management, timelines, task checklists, vendor coordination, guest management, and personalized event ideas.
+
+## 1. CORE OBJECTIVES
+
+Create a website that is:
+
+- Visually polished, modern, premium, and professional.
+- Fully responsive across mobile, tablet, laptop, and desktop.
+- Secure by design, with authentication, authorization, validation, and data isolation.
+- Accessible and usable with keyboard navigation.
+- Fast, maintainable, modular, and easy to extend.
+- Fully integrated with a real MongoDB database.
+- Integrated with a real LLM API through the backend.
+- Functional end to end, with real forms, CRUD operations, persistent data, error handling, and loading states.
+- Suitable for deployment after environment-specific configuration, testing, and security review.
+
+Do not use fake functionality, nonfunctional buttons, hardcoded dashboard statistics presented as real data, or simulated successful API responses.
+
+## 2. MANDATORY TECHNOLOGY STACK
+
+Frontend:
+- React with Vite.
+- JavaScript ES modules.
+- Tailwind CSS using a version-compatible official setup.
+- React Router for routing.
+- Axios for API requests.
+- React Hook Form and Zod for form validation where appropriate.
+- Recharts for analytics and budget visualizations.
+- Lucide React for consistent icons.
+- A lightweight toast notification library.
+- A suitable calendar component for event timelines.
+
+Backend:
+- Node.js with Express.js.
+- MongoDB with Mongoose.
+- Zod for request and configuration validation.
+- Official provider SDK for the selected LLM API.
+- Secure authentication and authorization middleware.
+- Structured logging and centralized error handling.
+
+Development and deployment:
+- Git and GitHub.
+- ESLint and Prettier.
+- Automated testing.
+- Separate frontend and backend environment configurations.
+- Vercel or equivalent static frontend hosting.
+- A suitable Node.js application host.
+- Managed MongoDB Atlas or another properly configured MongoDB deployment.
+
+Use mutually compatible, stable package versions. Do not invent package APIs or deprecated configuration instructions. Check the actual installed package versions before implementing integrations.
+
+## 3. USER ROLES AND ACCESS CONTROL
+
+Implement the following roles:
+
+A. Customer / Event Owner
+- Register and authenticate.
+- Create and manage personal events.
+- Generate and edit AI plans.
+- Manage budgets, expenses, tasks, vendors, and guests.
+- Export authorized event reports.
+- Invite collaborators where enabled.
+- Manage account settings and privacy preferences.
+
+B. Administrator
+- Access a protected admin dashboard.
+- Manage users, event categories, platform configuration, and moderation.
+- Review reported content and vendor verification requests.
+- Inspect aggregate platform statistics.
+- Monitor AI usage, failures, and rate-limit events.
+- Access personal event data only through explicitly authorized administrative workflows.
+
+C. Vendor (optional advanced module)
+- Manage a vendor profile and service categories.
+- Submit quotations and update their own availability.
+- Manage booking requests assigned to that vendor.
+- Access only the data necessary for their authorized transactions.
+
+D. Collaborator (optional advanced module)
+- Access only events they have been invited to.
+- Perform tasks and view or edit permitted sections.
+- Never exceed the permissions granted by the event owner.
+
+Enforce role-based and resource-level authorization on the server. Hiding a frontend button is not authorization.
+
+For the initial MVP, prioritize Customer and Administrator. Keep optional roles disabled until their workflows are implemented and tested.
+
+## 4. CORE APPLICATION FEATURES
+
+### 4.1 Authentication and Account Management
+
+Implement:
+- Registration and login.
+- Email verification before enabling sensitive account operations.
+- Secure password hashing using Argon2id or an appropriately configured bcrypt implementation.
+- Password reset through expiring, single-use tokens.
+- Logout and session/token invalidation.
+- Secure cookie-based authentication where appropriate.
+- Optional Google OAuth/OIDC integration using a maintained library.
+- Rate limiting for authentication endpoints.
+- Generic authentication error messages to reduce account enumeration.
+- Input validation and normalized email addresses.
+- Session or refresh-token rotation and revocation if using refresh tokens.
+- Account deletion and appropriate data deletion/export workflows.
+
+Never store plaintext passwords, access tokens, refresh tokens, API keys, or password-reset secrets in application logs.
+
+Prefer HttpOnly, Secure, SameSite cookies for browser authentication where appropriate. If cookies are used for authentication, implement CSRF protection and correct credentialed CORS configuration.
+
+Do not store long-lived authentication tokens in localStorage.
+
+### 4.2 Event Creation Wizard
+
+Build a multi-step, validated form with:
+
+- Event title.
+- Event type.
+- Event date and time.
+- Time zone.
+- City and venue details.
+- Estimated guest count.
+- Total budget and currency.
+- Theme and preferred style.
+- Dietary requirements.
+- Accessibility requirements.
+- Indoor/outdoor preference.
+- Cultural preferences.
+- Special instructions.
+- Planning status.
+
+Support Indian events and INR (₹) by default, while allowing future currency extension.
+
+Provide sensible defaults, conditional fields, progress indicators, and a review step before saving.
+
+Validate event dates, guest counts, budget values, string lengths, and required fields on both client and server.
+
+### 4.3 AI Event Planning Assistant
+
+Create a conversational planning interface that generates a structured event plan based on validated event details.
+
+AI output should include:
+- Event overview.
+- Theme and decoration suggestions.
+- Budget allocation by category.
+- Preparation timeline.
+- Vendor categories and requirements.
+- Task checklist.
+- Suggested menu and entertainment.
+- Shopping list.
+- Event-day schedule.
+- Risk and contingency suggestions.
+- Budget-saving alternatives.
+- Follow-up questions when essential information is missing.
+
+Use a supported LLM API through the backend only. Never expose the provider's API key in frontend code.
+
+Require structured JSON output that conforms to a defined schema. Validate every AI response before using it.
+
+If the AI response is invalid, incomplete, unsafe, or unavailable, show a recoverable error and preserve the user's existing data.
+
+Treat user prompts, vendor descriptions, and imported documents as untrusted input. Do not allow prompt injection to override application permissions or security rules.
+
+The AI may propose changes but must not automatically overwrite an approved plan, confirm bookings, send messages, or initiate payments without explicit user approval.
+
+Store useful generation metadata, model identifiers, usage estimates, and status without unnecessarily retaining sensitive prompts or personal data.
+
+Implement:
+- AI request rate limiting.
+- Per-user usage quotas.
+- Request timeouts.
+- Bounded input and output sizes.
+- Graceful failure handling.
+- Usage and cost monitoring.
+- User-visible loading and retry states.
+
+### 4.4 Smart Budget Management
+
+Create a complete budget module with:
+- Total event budget.
+- Category-wise planned amounts.
+- Actual expenses.
+- Vendor quotations.
+- Advance payments.
+- Remaining balances.
+- Emergency reserve.
+- Budget utilization charts.
+- Expense history.
+- Over-budget alerts.
+- AI cost-saving suggestions.
+- CSV and PDF export.
+
+Use integer minor currency units (paise for INR) where practical, or an appropriate Decimal128 strategy. Avoid floating-point arithmetic for financial calculations.
+
+Perform all authoritative calculations on the backend. Validate amounts, enforce ownership, and use transactions where multiple related financial records must change atomically.
+
+Distinguish estimated prices from verified vendor quotations. Never present an AI-generated estimate as a confirmed market price.
+
+### 4.5 Timeline and Task Management
+
+Implement:
+- Automatically suggested tasks and deadlines.
+- Task categories and priorities.
+- Assigned users where collaboration is enabled.
+- Due dates and completion status.
+- Calendar and list views.
+- Overdue indicators.
+- Task dependencies where appropriate.
+- Event-day run sheet.
+- Reminder configuration.
+- Task progress analytics.
+
+Do not schedule reminders or send notifications unless the required notification provider and scheduling infrastructure are configured.
+
+### 4.6 Vendor Management
+
+Implement:
+- Vendor directory.
+- Vendor service categories.
+- Contact information and location.
+- Quotations and comparison.
+- Shortlisted, contacted, booked, completed, and cancelled statuses.
+- Advance and balance tracking.
+- Notes and follow-up dates.
+- Document attachments with appropriate access control.
+- Booking history.
+
+Do not invent real vendor listings, ratings, contact details, availability, or prices. If no real vendor integration exists, allow users to enter their own vendors and quotations.
+
+### 4.7 Guest Management
+
+Implement:
+- Guest records.
+- RSVP status.
+- Guest groups and tags.
+- Dietary preferences where necessary.
+- Guest count summaries.
+- Invitation status.
+- Seating notes.
+- CSV import/export with validation.
+
+Protect guest contact information. Do not expose guest lists to unauthorized collaborators or vendors.
+
+### 4.8 Personalized Ideas
+
+Generate suggestions for:
+- Wedding themes.
+- Birthday decorations.
+- Cultural and community events.
+- Menu options.
+- Activities and entertainment.
+- Low-budget alternatives.
+- Sustainable decorations.
+- Indoor alternatives for bad weather.
+- Event-specific shopping lists.
+
+Provide explanations, estimated cost ranges where grounded, and alternative suggestions.
+
+### 4.9 Reports and Export
+
+Generate printable and downloadable reports containing:
+- Event summary.
+- Approved budget.
+- Expenses.
+- Timeline.
+- Checklist.
+- Vendor quotations.
+- Guest summary.
+
+Ensure exported information is limited to data the requesting user is authorized to access. Validate export requests and prevent spreadsheet formula injection in CSV files.
+
+### 4.10 Administration
+
+Build:
+- Admin overview dashboard.
+- User management.
+- Event category management.
+- Vendor verification workflow if vendors are enabled.
+- AI usage monitoring.
+- Failed generation monitoring.
+- Abuse reports.
+- Platform configuration.
+- Audit logs.
+
+Avoid exposing passwords, authentication secrets, private guest details, or unnecessary personal information in admin screens.
+
+## 5. UI/UX AND VISUAL DESIGN
+
+Create a premium SaaS dashboard with a coherent visual system.
+
+Design direction:
+- Clean, contemporary, elegant.
+- Light neutral background with deep navy text.
+- Refined indigo or violet accent colors.
+- Consistent typography, spacing, borders, shadows, and corner radii.
+- Subtle gradients only where useful.
+- Tasteful wedding, birthday, and community-event imagery.
+- Restrained animations and micro-interactions.
+- Clear information hierarchy.
+- Professional empty states and error states.
+- Avoid excessive glassmorphism, excessive gradients, clutter, and distracting animation.
+
+Use a consistent component system for:
+- Buttons.
+- Inputs.
+- Selects.
+- Date pickers.
+- Dialogs.
+- Dropdowns.
+- Cards.
+- Tables.
+- Charts.
+- Status badges.
+- Navigation.
+- Toasts.
+- Loading skeletons.
+
+Responsive requirements:
+- Mobile-first layouts.
+- Collapsible sidebar on small screens.
+- Accessible mobile navigation.
+- Responsive forms and tables.
+- Touch-friendly controls.
+- No unintended horizontal overflow.
+- Appropriate responsive typography.
+- Optimized image sizes and loading.
+- Test at common mobile, tablet, and desktop viewport sizes.
+
+Required pages:
+1. Landing page.
+2. Register and login.
+3. Password recovery.
+4. User dashboard.
+5. Create-event wizard.
+6. Event overview.
+7. AI planning workspace.
+8. Budget dashboard.
+9. Timeline and checklist.
+10. Vendor management.
+11. Guest management.
+12. Reports and settings.
+13. Profile and privacy settings.
+14. Protected admin dashboard.
+15. Not-found and error pages.
+
+Create a professional landing page with a strong hero section, feature highlights, event-type cards, workflow explanation, sample planning preview, pricing-ready section, FAQ, and footer.
+
+All controls must have meaningful behavior. Do not leave decorative buttons that appear functional but do nothing.
+
+Follow WCAG 2.2 AA principles where practical, including semantic HTML, keyboard access, visible focus, accessible labels, sufficient contrast, and reduced-motion preferences.
+
+## 6. MONGODB DATABASE ARCHITECTURE
+
+Use MongoDB Atlas or a properly secured MongoDB deployment with Mongoose.
+
+Create appropriate schemas and relationships for:
+- User.
+- Event.
+- EventMembership.
+- BudgetCategory or budget records.
+- Expense.
+- Task.
+- Vendor.
+- EventVendor / quotation.
+- Guest.
+- AI planning generation.
+- Notification.
+- AuditLog.
+
+Define:
+- Required fields.
+- Field types.
+- Defaults.
+- Enums where appropriate.
+- Mongoose validation.
+- Unique indexes.
+- Compound indexes.
+- Query indexes.
+- Timestamps.
+- Reference relationships.
+- Appropriate deletion behavior.
+- Pagination strategies.
+
+Design for data isolation between users and events. Use resource-level authorization in every relevant query.
+
+Never trust a client-supplied owner ID, role, price, payment status, or permission value.
+
+Use MongoDB transactions only where supported by the deployment and needed for atomic multi-document changes.
+
+Avoid unbounded embedded arrays and excessively large documents. Choose embedding versus references according to access patterns.
+
+Use schema validation at the API boundary in addition to Mongoose validation. Mongoose schemas alone are not sufficient protection.
+
+Use environment-based database configuration and least-privilege database credentials. Enable TLS and appropriate network access controls in production.
+
+Create safe, repeatable index and migration procedures. Never drop production collections or delete user data as part of routine startup.
+
+## 7. BACKEND ARCHITECTURE
+
+Use a modular Express architecture, for example:
+
+backend/
+  src/
+    app.js
+    server.js
+    config/
+      env.js
+      database.js
+    modules/
+      auth/
+      users/
+      events/
+      ai-planner/
+      budgets/
+      expenses/
+      tasks/
+      vendors/
+      guests/
+      reports/
+      admin/
+    middleware/
+      authenticate.js
+      authorize.js
+      validate.js
+      error-handler.js
+      rate-limit.js
+      request-id.js
+    services/
+    utils/
+    validators/
+    jobs/
+    tests/
+
+Each module should have clear responsibilities. Use controllers, services, repositories, validators, and routes when they improve maintainability; avoid unnecessary abstraction.
+
+Implement:
+- Centralized error handling.
+- Consistent API response formats.
+- Request validation.
+- Authentication and authorization.
+- Request size limits.
+- Rate limiting.
+- Structured logging.
+- Health and readiness endpoints.
+- Database connection lifecycle management.
+- Graceful shutdown.
+- Timeouts and retry policies where appropriate.
+- API versioning if useful.
+- Pagination, filtering, and sorting with strict allowlists.
+
+Use Helmet and an explicit CORS allowlist. Configure proxy trust only for the actual hosting environment. Do not enable unrestricted CORS in production.
+
+Prevent NoSQL injection, mass assignment, path traversal, insecure direct object references, XSS, CSRF where applicable, and information leakage.
+
+Do not use unsafe dynamic MongoDB query operators directly from user input. Do not expose raw database errors to clients.
+
+## 8. ENVIRONMENT CONFIGURATION
+
+Provide separate example environment files for frontend and backend.
+
+Backend environment variables should include appropriate values for:
+- NODE_ENV
+- PORT
+- MONGODB_URI
+- FRONTEND_ORIGIN
+- SESSION_SECRET or authentication secrets
+- LLM_API_KEY
+- LLM_MODEL
+- EMAIL_PROVIDER credentials when email is enabled
+- OAuth credentials when OAuth is enabled
+- Object storage credentials when file uploads are enabled
+- Logging and monitoring configuration
+
+Frontend should contain only public configuration such as the backend API base URL.
+
+Never put database credentials, LLM API keys, session secrets, or private OAuth credentials into VITE_ variables or committed source files.
+
+Validate required environment variables at application startup. Fail safely with a clear server-side configuration error.
+
+Include .gitignore and sanitized .env.example files. Never generate real secrets or claim that example credentials are production-ready.
+
+## 9. AUTHENTICATION AND AUTHORIZATION RULES
+
+Use deny-by-default access control.
+
+For every private resource:
+- Authenticate the requester.
+- Verify ownership or explicit membership.
+- Check the requested action's permission.
+- Validate the request payload.
+- Apply rate limits where appropriate.
+- Record important security-sensitive changes.
+
+Test horizontal privilege escalation, vertical privilege escalation, cross-user access, unauthorized exports, and access to guessed resource IDs.
+
+Protect admin endpoints independently of frontend navigation.
+
+Use short-lived credentials and a defined revocation strategy. Do not invent a secure authentication implementation without explaining its cookie, CSRF, session, rotation, and logout behavior.
+
+## 10. TESTING REQUIREMENTS
+
+Implement meaningful automated tests.
+
+Unit tests:
+- Budget calculations.
+- Date and deadline generation.
+- Input validation.
+- Permission checks.
+- AI output schema validation.
+- Error handling.
+
+Integration tests:
+- Authentication.
+- Event CRUD.
+- Budget and expense CRUD.
+- Task management.
+- Vendor and guest management.
+- AI generation and revision.
+- Export authorization.
+- MongoDB persistence.
+
+Security tests:
+- Unauthenticated access.
+- Cross-user resource access.
+- Admin privilege enforcement.
+- NoSQL injection attempts.
+- Malformed input.
+- Rate-limit enforcement.
+- Cookie and CSRF behavior where applicable.
+- Secrets and sensitive-data leakage.
+- AI prompt injection and invalid structured output.
+
+Frontend tests:
+- Form validation.
+- Loading, empty, and error states.
+- Navigation.
+- Responsive behavior.
+- Critical user journeys.
+
+Use mocked LLM responses for deterministic automated tests. Keep a separate optional integration test for the real provider.
+
+Do not claim that tests passed unless they were actually executed and their results were checked.
+
+## 11. DEPLOYMENT AND OPERATIONS
+
+Provide:
+- Local development instructions.
+- MongoDB Atlas setup instructions.
+- Environment configuration.
+- Production build commands.
+- Deployment instructions for frontend and backend.
+- Correct production CORS and cookie configuration.
+- HTTPS requirements.
+- Database backup and recovery guidance.
+- Log redaction rules.
+- Monitoring and alerting setup.
+- Dependency update procedures.
+- Rollback instructions.
+- Data retention and deletion policies.
+
+Use a proper production process manager or managed hosting runtime. Configure health checks and graceful shutdown.
+
+Do not rely on local filesystem persistence for uploaded files in ephemeral hosting environments.
+
+Do not claim the app is production-ready merely because it builds successfully. Document remaining provider configuration, manual verification, security testing, and deployment-specific work.
+
+## 12. IMPLEMENTATION WORKFLOW
+
+Follow these stages in order.
+
+Stage 1: Requirements and architecture
+- Identify assumptions and missing requirements.
+- Define the MVP and future features.
+- Create the folder structure.
+- Define the database schemas and API contracts.
+- Create a concise architecture diagram.
+- Document authentication and permission decisions.
+
+Stage 2: Foundation
+- Initialize frontend and backend.
+- Configure linting and formatting.
+- Set up MongoDB connection.
+- Implement environment validation and error handling.
+- Implement authentication and authorization.
+
+Stage 3: Core product
+- Implement event creation and CRUD.
+- Implement AI planning and schema validation.
+- Implement budgets, expenses, timelines, and tasks.
+- Connect the frontend to the actual backend APIs.
+
+Stage 4: Advanced features
+- Implement vendors, guests, reports, and administration.
+- Add optional modules only after their dependencies are complete.
+
+Stage 5: Quality assurance
+- Run builds, linting, automated tests, and security checks.
+- Fix errors rather than hiding them.
+- Check mobile responsiveness and accessibility.
+- Verify persistence and authorization with multiple test users.
+
+Stage 6: Deployment
+- Prepare production environment examples.
+- Document deployment and rollback procedures.
+- Verify production configuration and health checks.
+- Produce an honest list of completed, incomplete, and manually verified requirements.
+
+## 13. CODE QUALITY RULES
+
+- Generate complete, executable code rather than pseudocode for implemented features.
+- Use clear naming and consistent formatting.
+- Prefer small, focused modules.
+- Avoid duplicate logic.
+- Avoid unnecessary dependencies.
+- Do not disable security controls to make the application work.
+- Never hardcode secrets.
+- Never silently swallow errors.
+- Never fake successful responses.
+- Do not use insecure placeholder authentication.
+- Do not implement payment handling unless explicitly requested.
+- Do not expose private information in logs or error responses.
+- Include useful comments for non-obvious security and business logic.
+- Include appropriate loading, empty, success, and error states.
+- Explain each required configuration value.
+- Verify package APIs against the installed versions.
+- Keep the application runnable after each implementation stage.
+
+## 14. EXPECTED DELIVERABLES
+
+Provide:
+1. Architecture and feature breakdown.
+2. Complete frontend source code.
+3. Complete backend source code.
+4. Mongoose models and indexes.
+5. API routes, controllers, services, and validators.
+6. Authentication and authorization implementation.
+7. AI integration and structured response validation.
+8. Responsive UI and reusable components.
+9. Example environment files.
+10. Database initialization and migration/index setup.
+11. Automated tests.
+12. API documentation.
+13. README with setup and deployment instructions.
+14. Security checklist.
+15. Testing results and known limitations.
+16. Production launch checklist.
+
+## 15. FINAL ACCEPTANCE CRITERIA
+
+The application is acceptable only when:
+
+- A new user can register, verify their email, and log in.
+- A user can create an event and retrieve it after refreshing or logging in again.
+- The real backend and MongoDB persist the event and planning data.
+- AI generation uses a configured provider and returns validated structured data.
+- A failed AI request does not destroy existing event data.
+- Users can manage budgets, expenses, timelines, and tasks.
+- Calculations are correct and tested.
+- One user cannot access another user's private events.
+- Administrative access is enforced server-side.
+- The UI works on mobile, tablet, and desktop.
+- Forms, buttons, and navigation perform their intended actions.
+- Automated tests and production build checks have been executed and reported honestly.
+- No secrets are exposed in frontend bundles, logs, or source control.
+- Deployment and recovery instructions are documented.
+
+Start by presenting the architecture, MVP scope, folder structure, database design, API contracts, and implementation plan. Then build the project incrementally, verifying each stage before proceeding. If working in a coding environment, inspect the existing project before modifying it, preserve valid existing code, and report which files were created or changed.
+
+Do not attempt to implement every advanced feature in one enormous, unverified code dump. Prioritize a secure, working MVP and expand it systematically.
